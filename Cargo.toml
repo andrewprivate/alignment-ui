@@ -1,0 +1,19 @@
+[package]
+name = "stage-control"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "stage_control"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = "0.22.0"
+opencv = "0.93.3"
+
+[profile.dev]
+opt-level = 3
+
+[profile.release]
+opt-level = 3
