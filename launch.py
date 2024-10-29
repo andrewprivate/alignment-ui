@@ -2,8 +2,14 @@
 # Run maturin develop
 import subprocess
 import os
+import platform
+
 env = os.environ.copy()
-env["DYLD_FALLBACK_LIBRARY_PATH"] = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/"
+
+# only for macos
+if platform.system() == 'Darwin':
+    env["DYLD_FALLBACK_LIBRARY_PATH"] = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/"
+
 subprocess.run(['maturin', 'develop'], env=env).check_returncode()
 
 import asyncio

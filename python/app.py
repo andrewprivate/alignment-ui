@@ -11,11 +11,11 @@ class App:
     def __init__(self):
         self.app = bottle.Bottle()
         web_dir = os.path.join(os.path.dirname(__file__), '../web')
-        eel.init(web_dir)
+        eel.init(web_dir, allowed_extensions=['.js', '.html', '.mjs'])
 
         # self.camera_in = cv2.VideoCapture(0)
         print('Starting stage control')
-        stage_control.start(8080)
+        self.video_feed_port = stage_control.start()
         self.setup_hooks()
 
     def setup_hooks(self):
@@ -27,6 +27,7 @@ class App:
         @self.app.route('/api/video_feed')
         def video_feed():
             return HTTPResponse(self.gen_frames(), headers={'Content-Type': 'multipart/x-mixed-replace; boundary=frame'})
+            
         
 
 
@@ -50,8 +51,12 @@ class App:
                 last_frame_time = frame_time
 
     async def run(self):
-        eel.start('index.html', app=self.app)
+        eel.start_video_feed(self.video_feed_port)
+
         print(f'App is running')
+        eel.start('index.html', app=self.app)
+       
+       
 
    
 

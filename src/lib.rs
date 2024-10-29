@@ -6,10 +6,7 @@ use opencv::{
 use std::net::TcpListener;
 use std::io::Write;
 
-fn server_loop(port: usize) {
-    let listener = TcpListener::bind(format!("127.0.0.1:{}", port)).expect("Failed to bind to port");
-    println!("Server listening on port 8080");
-
+fn server_loop(listener: TcpListener) {
     let mut cam = videoio::VideoCapture::new(0, videoio::CAP_ANY).expect("Failed to get video capture");
     cam.set(videoio::CAP_PROP_FPS, 60.0).expect("Failed to set FPS");
     let mut frame = Mat::default();
@@ -77,11 +74,17 @@ fn server_loop(port: usize) {
 }
 
 #[pyfunction]
-pub fn start(port: usize) {
+pub fn start() -> u16 {
+    let listener = TcpListener::bind("127.0.0.1:0").expect("Failed to bind to port");
+    let port = listener.local_addr().unwrap().port();
+    println!("Server listening on port {}", port);
+
     // run in a separate thread
     std::thread::spawn(move || {
-        server_loop(port);
+        server_loop(listener);
     });
+
+    port
 }
 
 #[pymodule]
