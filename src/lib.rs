@@ -48,8 +48,8 @@ fn server_loop(listener: TcpListener) {
             continue;
         }
 
-        let mut last_time = std::time::Instant::now();
-        let mut last_display = std::time::Instant::now();
+        // let mut last_time = std::time::Instant::now();
+       // let mut last_display = std::time::Instant::now();
         loop {
             let mut camera_lock = CAMERA.lock().unwrap();
             let camera = camera_lock.as_mut().unwrap();
@@ -84,15 +84,15 @@ fn server_loop(listener: TcpListener) {
                 break;
             }
 
-            let now = std::time::Instant::now();
-            if now.duration_since(last_display).as_secs() > 1 {
+            // let now = std::time::Instant::now();
+            // if now.duration_since(last_display).as_secs() > 1 {
                 
-                // Print fps
-                let fps = 1.0 / (now.duration_since(last_time).as_secs_f64());
-                println!("FPS: {}", fps);
-                last_display = now;
-            }
-            last_time = now;
+            //     // Print fps
+            //     let fps = 1.0 / (now.duration_since(last_time).as_secs_f64());
+            //     println!("FPS: {}", fps);
+            //     last_display = now;
+            // }
+            // last_time = now;
         }
     }
 }
