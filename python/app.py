@@ -5,7 +5,7 @@ import asyncio
 import cv2
 from bottle import HTTPResponse
 import time
-import stage_control
+import pictestingrs
 
 class App:
     def __init__(self):
