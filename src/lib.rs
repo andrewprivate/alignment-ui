@@ -1,9 +1,16 @@
+use image::ImageBuffer;
 use nokhwa::pixel_format::RgbFormat;
 use nokhwa::utils::{CameraIndex, RequestedFormat, RequestedFormatType};
-use nokhwa::{nokhwa_initialize, CallbackCamera, Camera};
+use nokhwa::{nokhwa_initialize, Camera};
+use numpy::prelude::*;
 use pyo3::prelude::*;
 use std::net::TcpListener;
 use std::io::{Cursor, Write};
+use std::sync::{LazyLock, Mutex};
+
+static CAMERA: LazyLock<Mutex<Option<Camera>>> = LazyLock::new(|| {
+    Mutex::new(None)
+});
 
 fn server_loop(listener: TcpListener) {
     nokhwa_initialize(|granted| {
@@ -15,12 +22,17 @@ fn server_loop(listener: TcpListener) {
     // request the absolute highest resolution CameraFormat that can be decoded to RGB.
     let requested = RequestedFormat::new::<RgbFormat>(RequestedFormatType::AbsoluteHighestFrameRate);
     // make the camera
-    let mut camera = CallbackCamera::new(index, requested, |_buffer| {
-
-    }).unwrap();
+    let mut camera = Camera::new(index, requested).unwrap();
 
     // let mut camera = Camera::new(index, requested).unwrap();
     camera.open_stream().unwrap();
+
+    // store the camera in the global variable
+    let mut camera_lock = CAMERA.lock().unwrap();
+    *camera_lock = Some(camera);
+
+    // release the lock
+    drop(camera_lock);
 
 
     let mut buf: Vec<u8> = Vec::new();
@@ -39,7 +51,9 @@ fn server_loop(listener: TcpListener) {
         let mut last_time = std::time::Instant::now();
         let mut last_display = std::time::Instant::now();
         loop {
-            let frame = camera.poll_frame().expect("Failed to get frame");
+            let mut camera_lock = CAMERA.lock().unwrap();
+            let camera = camera_lock.as_mut().unwrap();
+            let frame = camera.frame().expect("Failed to get frame");
             let decoded = frame.decode_image::<RgbFormat>().unwrap();
             
             buf.clear();
@@ -97,7 +111,25 @@ pub fn start() -> u16 {
     port
 }
 
+#[pyfunction]
+pub fn get_frame<'py>(py: Python<'py>) ->Bound<'py, numpy::PyArray<u8, numpy::ndarray::Dim<[usize; 3]>>> {
+    let mut camera_lock = CAMERA.lock().unwrap();
+    let camera = camera_lock.as_mut().unwrap();
+    let frame = camera.frame().expect("Failed to get frame");
+    let decoded = frame.decode_image::<RgbFormat>().unwrap();
+    
+    // convert to numpy array, (width, height, 3)
+    let width = decoded.width();
+    let height = decoded.height();
+   
+    let array: Bound<'py, numpy::PyArray<u8, numpy::ndarray::Dim<[usize; 3]>>> = decoded.to_pyarray_bound(py).reshape((height as usize, width as usize, 3)).unwrap();
+    
+    array // return the numpy
+}
+
 #[pymodule]
 fn pictestingrs(m: &Bound<'_, PyModule>) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(start, m)?)
+    m.add_function(wrap_pyfunction!(start, m)?)?;
+    m.add_function(wrap_pyfunction!(get_frame, m)?)?;
+    Ok(())
 }

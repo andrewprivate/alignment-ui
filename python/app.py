@@ -15,13 +15,14 @@ class App:
 
         # self.camera_in = cv2.VideoCapture(0)
         print('Starting stage control')
-        self.video_feed_port = stage_control.start()
+        self.video_feed_port = pictestingrs.start()
         self.setup_hooks()
 
     def setup_hooks(self):
         @eel.expose
         def say_hello_py(x):
             print(f'Hello from {x}')
+            eel.start_video_feed(self.video_feed_port)
             return f'Hello from {x}'
         
         @self.app.route('/api/video_feed')
@@ -51,7 +52,6 @@ class App:
                 last_frame_time = frame_time
 
     async def run(self):
-        eel.start_video_feed(self.video_feed_port)
 
         print(f'App is running')
         eel.start('index.html', app=self.app)
