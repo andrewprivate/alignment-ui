@@ -9,11 +9,17 @@ name = "stage_control"
 crate-type = ["cdylib"]
 
 [dependencies]
+image = "0.25.4"
 pyo3 = "0.22.0"
-opencv = "0.93.3"
+
+[dependencies.nokhwa]
+version = "0.10.5"
+features = ["input-native", "output-wgpu", "output-threaded"]
 
 [profile.dev]
 opt-level = 3
 
 [profile.release]
 opt-level = 3
+
+
