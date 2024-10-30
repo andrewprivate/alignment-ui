@@ -15,3 +15,13 @@ eel.expose(start_video_feed);
 function start_video_feed(port) {
     document.getElementById("video-feed").src = `http://127.0.0.1:${port}`
 }
+
+eel.expose(add_log_entry);
+function add_log_entry(type, ...messages) {
+    window.controller.logTray.addEntry(type, ...messages);
+}
+
+eel.expose(add_point);
+function add_point(x, y, z) {
+    window.controller.controlsWidget.addPoint(x, y, z);
+}

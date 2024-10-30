@@ -6,6 +6,7 @@ import cv2
 from bottle import HTTPResponse
 import time
 import pictestingrs
+from python.commands import Commands
 
 class App:
     def __init__(self):
@@ -18,19 +19,14 @@ class App:
         self.video_feed_port = pictestingrs.start()
         self.setup_hooks()
 
+        self.commands = Commands(self)
+
     def setup_hooks(self):
         @eel.expose
         def say_hello_py(x):
             print(f'Hello from {x}')
             eel.start_video_feed(self.video_feed_port)
             return f'Hello from {x}'
-        
-        @self.app.route('/api/video_feed')
-        def video_feed():
-            return HTTPResponse(self.gen_frames(), headers={'Content-Type': 'multipart/x-mixed-replace; boundary=frame'})
-            
-        
-
 
     def gen_frames(self):
         last_frame_time = 0

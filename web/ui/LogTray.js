@@ -40,7 +40,7 @@ export class LogTray {
 
         this.ui.consoleInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
-                this.addEntry('log', this.ui.consoleInput.value);
+                window.eel.send_command(this.ui.consoleInput.value);
                 if (this.ui.consoleInput.value.trim().length) {
                     this.consoleHistory.push(this.ui.consoleInput.value);
                     this.consoleHistoryIndex = this.consoleHistory.length;

@@ -1,3 +1,4 @@
+import { ControlsWidget } from "./ControlsWidget.js";
 import { LiveFeed } from "./LiveFeed.js";
 import { LogTray } from "./LogTray.js";
 import { PaneCollection } from "./PaneCollection.js";
@@ -47,24 +48,24 @@ export class Controller {
         this.ui.contentContainer.classList.add('content-container');
         this.ui.container.appendChild(this.ui.contentContainer);
 
-        this.paneCollection = new PaneCollection();
-        this.ui.contentPanePanel = new Panel();
-        this.ui.contentPanePanel.getElement().appendChild(this.paneCollection.getElement());
+        this.controlsWidget = new ControlsWidget();
+        this.ui.controlsWidgetPanel = new Panel();
+        this.ui.controlsWidgetPanel.getElement().appendChild(this.controlsWidget.getElement());
        
         this.ui.logPanel = new Panel();
         this.ui.logPanel.getElement().appendChild(this.logTray.getElement());
 
-        this.ui.liveFeed = new LiveFeed();
+        this.liveFeed = new LiveFeed();
         this.ui.liveFeedPanel = new Panel();
-        this.ui.liveFeedPanel.getElement().appendChild(this.ui.liveFeed.getElement());
+        this.ui.liveFeedPanel.getElement().appendChild(this.liveFeed.getElement());
 
-        this.ui.contentPanePanel.setBounds(0, 0, 0.5, 0.8);
-        this.ui.liveFeedPanel.setBounds(0.5, 0, 1, 0.8);
+        this.ui.controlsWidgetPanel.setBounds(0.5, 0, 1, 0.8);
+        this.ui.liveFeedPanel.setBounds(0, 0, 0.5, 0.8);
         this.ui.logPanel.setBounds(0, 0.8, 1, 1);
 
         this.resizeablePanels = new ResizeablePanels();
         this.resizeablePanels.setPanels([
-            this.ui.contentPanePanel,
+            this.ui.controlsWidgetPanel,
             this.ui.liveFeedPanel,
             this.ui.logPanel
         ]);

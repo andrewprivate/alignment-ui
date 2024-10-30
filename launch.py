@@ -14,4 +14,8 @@ subprocess.run(['maturin', 'develop'], env=env).check_returncode()
 
 import asyncio
 from python.app import App
-asyncio.run(App().run())
+
+app = App()
+
+asyncio.run(app.run())
+app.close()
