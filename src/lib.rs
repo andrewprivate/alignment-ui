@@ -88,6 +88,6 @@ pub fn start() -> u16 {
 }
 
 #[pymodule]
-fn stage_control(m: &Bound<'_, PyModule>) -> PyResult<()> {
+fn pictestingrs(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(start, m)?)
 }
