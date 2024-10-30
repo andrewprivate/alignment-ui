@@ -1,24 +1,32 @@
+use nokhwa::pixel_format::RgbFormat;
+use nokhwa::utils::{CameraIndex, RequestedFormat, RequestedFormatType};
+use nokhwa::{nokhwa_initialize, CallbackCamera, Camera};
 use pyo3::prelude::*;
-use opencv::{
-    core::{Mat, Vector}, imgcodecs, prelude::*, videoio,
-};
-
 use std::net::TcpListener;
-use std::io::Write;
+use std::io::{Cursor, Write};
 
 fn server_loop(listener: TcpListener) {
-    let mut cam = videoio::VideoCapture::new(0, videoio::CAP_ANY).expect("Failed to get video capture");
-    cam.set(videoio::CAP_PROP_FPS, 60.0).expect("Failed to set FPS");
-    let mut frame = Mat::default();
-    let mut buf = Vector::new();
-    
+    nokhwa_initialize(|granted| {
+        println!("Granted: {:?}", granted);
+    });
+
+    // first camera in system
+    let index = CameraIndex::Index(0); 
+    // request the absolute highest resolution CameraFormat that can be decoded to RGB.
+    let requested = RequestedFormat::new::<RgbFormat>(RequestedFormatType::AbsoluteHighestFrameRate);
+    // make the camera
+    let mut camera = CallbackCamera::new(index, requested, |_buffer| {
+
+    }).unwrap();
+
+    // let mut camera = Camera::new(index, requested).unwrap();
+    camera.open_stream().unwrap();
+
+
+    let mut buf: Vec<u8> = Vec::new();
     loop {
         let (mut stream, _) = listener.accept().expect("Failed to accept connection");
         
-        cam.read(&mut frame).expect("Failed to capture frame");
-        buf.clear();
-        let _ = imgcodecs::imencode(".jpg", &frame, &mut buf, &Vector::new());
-
         let response = format!(
             "HTTP/1.1 200 OK\r\nContent-Type: multipart/x-mixed-replace; boundary=frame\r\n\r\n"
         );
@@ -31,9 +39,11 @@ fn server_loop(listener: TcpListener) {
         let mut last_time = std::time::Instant::now();
         let mut last_display = std::time::Instant::now();
         loop {
-            cam.read(&mut frame).expect("Failed to capture frame");
+            let frame = camera.poll_frame().expect("Failed to get frame");
+            let decoded = frame.decode_image::<RgbFormat>().unwrap();
+            
             buf.clear();
-            let _ = imgcodecs::imencode(".jpg", &frame, &mut buf, &Vector::new());
+            decoded.write_to(&mut Cursor::new(&mut buf), image::ImageFormat::Jpeg).unwrap();
 
             let image_data = format!(
                 "--frame\r\nContent-Type: image/jpeg\r\nContent-Length: {}\r\n\r\n",
