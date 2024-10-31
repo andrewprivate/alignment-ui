@@ -16,7 +16,15 @@ export class ControlsWidget {
             x: [],
             y: [],
             z: [],
-            type: 'scatter3d'
+            type: 'scatter3d',
+            marker: {
+                color: 'rgb(17, 157, 255)',
+                size: 4,
+                line: {
+                  color: 'rgb(231, 99, 250)',
+                  width: 2
+                }
+            },
         }
         window.Plotly.newPlot(this.plotElement, [this.trace],{
             margin: {

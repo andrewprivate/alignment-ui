@@ -1,6 +1,6 @@
 import sys
 import eel
-import align
+import python.align
 
 real_stdout = sys.stdout
 
@@ -40,5 +40,5 @@ class Commands:
     def execute_command(self, cmd):
         print(f"Executing command: {cmd}")
         if cmd == "align":
-            return align.align(self.app)
+            return python.align.align(self.app)
         
