@@ -25,3 +25,8 @@ eel.expose(add_point);
 function add_point(x, y, z) {
     window.controller.controlsWidget.addPoint(x, y, z);
 }
+
+eel.expose(update_power_reading);
+function update_power_reading(reading) {
+    window.controller.controlsWidget.updatePowerReading(reading);
+}

@@ -807,7 +807,62 @@ body {
     -ms-interpolation-mode: nearest-neighbor;   /* IE8+ */
 }
 
-.web-pictest .controls-widget .plot {
-    position: absolute;
-    inset: 0px;
+.web-pictest .controls-widget .controls-container {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    margin-top: 20px;
+    margin-left: 30px;
+    gap: 2em;
+    width: fit-content;
+}
+
+.web-pictest .controls-widget .power-meter-container,
+.web-pictest .controls-widget .movement-container {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    width: fit-content;
+}
+
+.web-pictest .controls-widget .power-meter-container .power-meter-reading {
+    width: 300px;
+    height: 55px;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 5px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+.web-pictest .controls-widget .power-meter-container .power-meter-button,
+.web-pictest .controls-widget .movement-container .fiber-button,
+.web-pictest .controls-widget .movement-container .axis-button,
+.web-pictest .controls-widget .movement-container .stage-movement-button {
+    width: 140px;
+    height: 40px;
+    font-size: 16px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    border: 1px solid black;   
+    border-radius: 10px;
+}
+
+.web-pictest .controls-widget .power-meter-container .power-meter-button:hover,
+.web-pictest .controls-widget .movement-container .fiber-button:hover,
+.web-pictest .controls-widget .movement-container .axis-button:hover,
+.web-pictest .controls-widget .movement-container .stage-movement-button:hover {
+    background-color: rgba(112, 112, 112, 0.1);
+}
+
+
+.web-pictest .controls-widget .power-meter-container .power-meter-button.active,
+.web-pictest .controls-widget .movement-container .fiber-button.active,
+.web-pictest .controls-widget .movement-container .axis-button.active,
+.web-pictest .controls-widget .movement-container .stage-movement-button.active {
+    background-color: rgba(112, 112, 112, 0.1);
+}
+
+.web-pictest .controls-widget .vertical-divider {
+    border-left: 2px solid black;
 }

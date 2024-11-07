@@ -10,7 +10,7 @@ env = os.environ.copy()
 if platform.system() == 'Darwin':
     env["DYLD_FALLBACK_LIBRARY_PATH"] = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/"
 
-subprocess.run(['maturin', 'develop'], env=env).check_returncode()
+# subprocess.run(['maturin', 'develop'], env=env).check_returncode()
 
 import asyncio
 from python.app import App
