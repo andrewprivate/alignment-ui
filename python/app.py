@@ -5,7 +5,7 @@ import asyncio
 import cv2
 from bottle import HTTPResponse
 import time
-# import pictestingrs
+import pictestingrs
 import pyvisa
 from pylablib.devices import Newport
 from python.commands import Commands
@@ -17,9 +17,9 @@ class App:
         web_dir = os.path.join(os.path.dirname(__file__), '../web')
         eel.init(web_dir, allowed_extensions=['.js', '.html', '.mjs'])
 
-        # self.camera_in = cv2.VideoCapture(0)
+        self.camera_in = cv2.VideoCapture(0)
         print('Starting stage control')
-        # self.video_feed_port = pictestingrs.start()
+        self.video_feed_port = pictestingrs.start()
         self.setup_hooks()
 
         self.commands = Commands(self)
@@ -35,7 +35,7 @@ class App:
         @eel.expose
         def say_hello_py(x):
             print(f'Hello from {x}')
-            # eel.start_video_feed(self.video_feed_port)
+            eel.start_video_feed(self.video_feed_port)
             return f'Hello from {x}'
         
         @eel.expose

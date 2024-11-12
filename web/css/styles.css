@@ -807,6 +807,12 @@ body {
     -ms-interpolation-mode: nearest-neighbor;   /* IE8+ */
 }
 
+.web-pictest .controls-widget {
+    display: flex;
+    flex-direction: row;
+    margin-top: 50px;
+}
+
 .web-pictest .controls-widget .controls-container {
     display: flex;
     flex-direction: row;
@@ -817,8 +823,14 @@ body {
     width: fit-content;
 }
 
-.web-pictest .controls-widget .power-meter-container,
 .web-pictest .controls-widget .movement-container {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    width: fit-content;
+}
+
+.web-pictest .controls-widget .power-meter-container {
     display: flex;
     flex-direction: column;
     align-items: left;
@@ -865,4 +877,38 @@ body {
 
 .web-pictest .controls-widget .vertical-divider {
     border-left: 2px solid black;
+}
+
+.web-pictest .controls-widget .left-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+}
+
+.web-pictest .controls-widget .right-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stitched-image-container {
+    margin-left: 10px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 600px;
+    height: 600px;
+    background-color: gray;
+}
+
+#stitched-image {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: hidden;
 }

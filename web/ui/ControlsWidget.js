@@ -8,9 +8,12 @@ export class ControlsWidget {
         this.ui.container = document.createElement('div');
         this.ui.container.classList.add('controls-widget');
 
+        this.leftPanel = document.createElement('div');
+        this.leftPanel.classList.add('left-panel');
+
         this.plotElement = document.createElement('div');
         this.plotElement.classList.add('plot');
-        this.ui.container.appendChild(this.plotElement);
+        this.leftPanel.appendChild(this.plotElement);
 
         this.trace = {
             x: [],
@@ -247,9 +250,24 @@ export class ControlsWidget {
         this.controlsContainer.appendChild(this.verticalDivider);
 
         this.controlsContainer.appendChild(this.powerMeterContainer);
-        this.ui.container.appendChild(this.controlsContainer);
+        this.leftPanel.appendChild(this.controlsContainer);
+        this.ui.container.appendChild(this.leftPanel);
 
         this.hideAllAxisButtons();
+
+        this.rightPanel = document.createElement('div');
+        this.rightPanel.classList.add('right-panel');
+        
+        this.stitchedImageContainer = document.createElement('div');
+        this.stitchedImageContainer.classList.add('stitched-image-container');
+        this.stitchedImageContainer.textContent = 'Stitched Image Placeholder';
+
+        this.stitchedImage = document.createElement('img');
+        this.stitchedImage.id = 'stitched-image';
+        this.stitchedImageContainer.appendChild(this.stitchedImage);
+
+        this.rightPanel.appendChild(this.stitchedImageContainer);
+        this.ui.container.appendChild(this.rightPanel);
     }
 
     updatePowerReading(reading) {
