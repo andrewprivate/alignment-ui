@@ -11,35 +11,6 @@ export class ControlsWidget {
         this.leftPanel = document.createElement('div');
         this.leftPanel.classList.add('left-panel');
 
-        this.plotElement = document.createElement('div');
-        this.plotElement.classList.add('plot');
-        this.leftPanel.appendChild(this.plotElement);
-
-        this.trace = {
-            x: [],
-            y: [],
-            z: [],
-            type: 'scatter3d',
-            marker: {
-                color: 'rgb(17, 157, 255)',
-                size: 4,
-                line: {
-                  color: 'rgb(231, 99, 250)',
-                  width: 2
-                }
-            },
-        }
-        window.Plotly.newPlot(this.plotElement, [this.trace],{
-            margin: {
-                l: 0,
-                r: 0,
-                b: 0,
-                t: 0
-            }
-        },{
-            responsive: true
-        });
-
         this.controlsContainer = document.createElement('div');
         this.controlsContainer.classList.add('controls-container');
 
@@ -64,7 +35,7 @@ export class ControlsWidget {
 
         // align button
         this.alignButton = document.createElement('button');
-        this.alignButton.textContent = 'Align';
+        this.alignButton.textContent = 'Align Fibers';
         this.alignButton.classList.add('fiber-button');
         this.fiberSelectionContainer.appendChild(this.alignButton);
 
@@ -251,6 +222,37 @@ export class ControlsWidget {
 
         this.controlsContainer.appendChild(this.powerMeterContainer);
         this.leftPanel.appendChild(this.controlsContainer);
+        
+        // plot 
+        this.plotElement = document.createElement('div');
+        this.plotElement.classList.add('plot');
+        this.leftPanel.appendChild(this.plotElement);
+
+        this.trace = {
+            x: [],
+            y: [],
+            z: [],
+            type: 'scatter3d',
+            marker: {
+                color: 'rgb(17, 157, 255)',
+                size: 4,
+                line: {
+                  color: 'rgb(231, 99, 250)',
+                  width: 2
+                }
+            },
+        }
+        window.Plotly.newPlot(this.plotElement, [this.trace],{
+            margin: {
+                l: 0,
+                r: 0,
+                b: 0,
+                t: 0
+            }
+        },{
+            responsive: true
+        });
+
         this.ui.container.appendChild(this.leftPanel);
 
         this.hideAllAxisButtons();
@@ -267,6 +269,13 @@ export class ControlsWidget {
         this.stitchedImageContainer.appendChild(this.stitchedImage);
 
         this.rightPanel.appendChild(this.stitchedImageContainer);
+        this.ui.container.appendChild(this.rightPanel);
+
+        // stitch button
+        this.stitchButton = document.createElement('button');
+        this.stitchButton.textContent = 'Capture & Stitch';
+        this.stitchButton.classList.add('stitch-button');
+        this.rightPanel.appendChild(this.stitchButton);
         this.ui.container.appendChild(this.rightPanel);
     }
 

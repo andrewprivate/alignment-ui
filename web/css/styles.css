@@ -813,12 +813,21 @@ body {
     margin-top: 50px;
 }
 
+.web-pictest .controls-widget .plot {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border: 1px solid black;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
 .web-pictest .controls-widget .controls-container {
     display: flex;
     flex-direction: row;
     align-items: left;
     margin-top: 20px;
-    margin-left: 30px;
+    margin-left: 20px;
     gap: 2em;
     width: fit-content;
 }
@@ -850,7 +859,8 @@ body {
 .web-pictest .controls-widget .power-meter-container .power-meter-button,
 .web-pictest .controls-widget .movement-container .fiber-button,
 .web-pictest .controls-widget .movement-container .axis-button,
-.web-pictest .controls-widget .movement-container .stage-movement-button {
+.web-pictest .controls-widget .movement-container .stage-movement-button,
+.web-pictest .controls-widget .stitch-button {
     width: 140px;
     height: 40px;
     font-size: 16px;
@@ -863,7 +873,8 @@ body {
 .web-pictest .controls-widget .power-meter-container .power-meter-button:hover,
 .web-pictest .controls-widget .movement-container .fiber-button:hover,
 .web-pictest .controls-widget .movement-container .axis-button:hover,
-.web-pictest .controls-widget .movement-container .stage-movement-button:hover {
+.web-pictest .controls-widget .movement-container .stage-movement-button:hover,
+.web-pictest .controls-widget .stitch-button:hover {
     background-color: rgba(112, 112, 112, 0.1);
 }
 
@@ -889,18 +900,19 @@ body {
 .web-pictest .controls-widget .right-panel {
     flex: 1;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
+    margin-left: 10px;
+    gap: 1em;
 }
 
 .stitched-image-container {
-    margin-left: 10px;
-    margin-right: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 600px;
-    height: 600px;
+    width: 590px;
+    height: 590px;
+    margin-right: 10px;
     background-color: gray;
 }
 
