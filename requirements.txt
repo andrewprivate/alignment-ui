@@ -1,4 +1,3 @@
-maturin==1.7.4
 eel==0.17.0
 opencv-python==4.10.0.84
 pyvisa==1.14.1
